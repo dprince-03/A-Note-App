@@ -1,8 +1,12 @@
 const express = require('express');
 const pageRouter = express.Router();
 
-const { homepage } = require('../controllers/appPages.controllers');
+const { 
+    homepage, 
+    about
+} = require('../controllers/appPages.controllers');
 
 pageRouter.get("/", homepage);
+pageRouter.get("/about", about);
 
 module.exports = pageRouter;
