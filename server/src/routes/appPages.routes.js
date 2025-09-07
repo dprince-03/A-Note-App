@@ -3,7 +3,7 @@ const pageRouter = express.Router();
 
 const { 
     homepage, 
-    about
+    about,
 } = require('../controllers/appPages.controllers');
 
 pageRouter.get("/", homepage);
