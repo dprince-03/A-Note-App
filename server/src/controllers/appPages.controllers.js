@@ -6,7 +6,10 @@ const homepage = async (req, res) => {
 		description: "Node js Notes App",
 	};
 
-	res.render("index", locals);
+	res.render("index", {
+		locals,
+		layout: "../views/layouts/front-page",
+	});
 };
 
 const about = async (req, res) => {
@@ -15,7 +18,9 @@ const about = async (req, res) => {
 		description: "Node js Notes App",
 	};
 
-	res.render("about", locals);
+	res.render("about", {
+		locals,
+	});
 };
 
 module.exports = { 
