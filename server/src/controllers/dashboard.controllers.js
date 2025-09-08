@@ -14,48 +14,53 @@ const dashboardHomepage = async (req, res) => {
 	};
 
 	try {
-		Notes.aggregate([
+		// Check if user exists
+		if (!req.user) {
+			return res.redirect("/");
+		}
+
+		const notes = await Notes.aggregate([
 			{
-				$sort: {
-					createdAt: -1,
-				},
+				$sort: { createdAt: -1 },
 			},
 			{
-				$match: {
-					user: mongoose.Types.ObjectId(req.body.id),
-				},
+				$match: { user: new mongoose.Types.ObjectId(req.user._id) },
 			},
 			{
 				$project: {
-					title: {
-						$substr: ["$title", 0, 30],
-					},
-					body: {
-						$substr: ["$body", 0, 100],
-					},
+					title: { $substr: ["$title", 0, 30] },
+					body: { $substr: ["$body", 0, 100] },
 				},
 			},
 		])
-		.skip(perPage * page - perPage)
-		.limit(perPage)
-		.exec((err, notes) => {
-			Notes.count().exec((err, count) => {
-				if(err) return next(err);
-				
-				res.render("dashboard/index", {
-					userName: req.user.firstName,
-					locals,
-					notes,
-					layout: "../views/layouts/dashboard",
-					current: page,
-					pages: Math.ceil( count / perPage),
-				});
-			});
+			.skip(perPage * page - perPage)
+			.limit(perPage);
+		// .exec(function (err, notes){
+		// 	Notes.count().exec(function (err, count){
+		// 		if (err) return next(err);
+		// 		res.render("dashboard/index", {
+		// 			userName: req.user.firstName,
+		// 			locals,
+		// 			notes,
+		// 			layout: "../views/layouts/dashboard",
+		// 			current: page,
+		// 			pages: Math.ceil(count / perPage),
+		// 		});
+		// 	});})
+		// const notes = await Notes.find({});
+
+		// Get total count
+		const count = await Notes.countDocuments({ user: req.user._id });
+
+		res.render("dashboard/index", {
+			userName: req.user.firstName,
+			locals,
+			notes,
+			layout: "../views/layouts/dashboard",
+			current: page,
+			pages: Math.ceil(count / perPage),
 		});
 
-		// const notes = await Notes.find({});
-		
-		
 	} catch (error) {
 		console.log(error);
 		
