@@ -10,6 +10,7 @@ const morgan = require('morgan');
 const session = require('express-session');
 const passport = require('passport');
 const MongoStore = require('connect-mongo');
+const methodOverride = require('method-override');
 
 const connectDB = require('./src/config/db.config');
 const pageRouter = require("./src/routes/appPages.routes");
@@ -59,6 +60,7 @@ app.use(express.urlencoded({
     extended: true,
 }));
 app.use(express.json());
+app.use(methodOverride());
 app.use(cookieParser());
 app.use(cors({
     origin: `http://localhost:${PORT}`,
@@ -77,7 +79,7 @@ app.set('view engine', 'ejs');
 // Routes
 app.use('/', authRouter);
 app.use('/', pageRouter);
-app.use('/dashboard', dashboardRouter);
+app.use('/', dashboardRouter);
 
 //Handle 404
 app.use((req, res) => {
