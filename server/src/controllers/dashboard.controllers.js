@@ -22,12 +22,8 @@ const dashboardHomepage = async(req, res) => {
 		}
 
 		const notes = await Notes.aggregate([
-			{
-				$sort: { createdAt: -1 },
-			},
-			{
-				$match: { user: new mongoose.Types.ObjectId(req.user._id) },
-			},
+			{ $sort: { updatedAt: -1 } },
+			{ $match: { user: new mongoose.Types.ObjectId(req.user._id) } },
 			{
 				$project: {
 					title: { $substr: ["$title", 0, 30] },
@@ -136,6 +132,7 @@ const dashboardUpdateNote = async(req, res) => {
 		{ 
 			title : req.body.title,
 			body: req.body.body,
+			updatedAt: Date.now(),
 		}).where({
 			user: req.user.id,
 		});
