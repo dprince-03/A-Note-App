@@ -49,9 +49,9 @@ Before running this application, make sure you have the following installed:
 3. **Environment Setup:**
    Create a `.env` file in the root directory and add the following variables:
    ```env
-   MONGODB_URL=mongodb://localhost:27017/notes-app
+   MONGODB_URL=mongodb://localhost:27017/
    # OR for MongoDB Atlas:
-   # MONGODB_URL=mongodb+srv://username:password@cluster.mongodb.net/notes-app
+   # MONGODB_URL=mongodb+srv://username:password@cluster.mongodb.net/
 
    SESSION_SECRET=your-super-secret-session-key-here
 
